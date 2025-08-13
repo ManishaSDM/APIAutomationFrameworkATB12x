@@ -3,7 +3,9 @@ package com.thetestingacademy.base;
 import com.thetestingacademy.asserts.AssertActions;
 import com.thetestingacademy.endpoints.APIConstants;
 import com.thetestingacademy.modules.PayloadManager;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -21,6 +23,16 @@ public class BaseTest {
     public JsonPath jsonPath;
     public Response response;
     public ValidatableResponse validatableResponse;
+//
+//    @BeforeMethod
+//    public void waitCustom(){
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
 
 
     @BeforeTest
@@ -46,8 +58,18 @@ public class BaseTest {
         System.out.println("Finished the Test!");
     }
 
+    public  String getToken(){
+        requestSpecification = RestAssured.given();
+        requestSpecification.baseUri(APIConstants.BASE_URL)
+                .basePath(APIConstants.AUTH_URL);
+        // Setting the payload
+        String payload = payloadManager.setAuthPayload();
+        // Get the Token
+        response = requestSpecification.contentType(ContentType.JSON).body(payload).when().post();
+        String token = payloadManager.getTokenFromJSON(response.asString());
+        return token;
 
-
+    }
 
 
 }

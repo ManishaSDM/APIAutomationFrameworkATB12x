@@ -1,6 +1,9 @@
 package com.thetestingacademy.asserts;
 
 import io.restassured.response.Response;
+import static org.testng.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.*;
+import static org.testng.Assert.assertTrue;
 
 import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -36,4 +39,8 @@ public class AssertActions {
     }
 
 
+    public void verifyTrue(boolean keyExpect) {
+        // AssertJ
+        assertTrue(keyExpect);
+    }
 }
